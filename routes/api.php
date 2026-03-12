@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HabitController;
+use App\Http\Controllers\LogsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +9,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::get('/',function(){
-    return "api ";
-});
+//all  the routes we need for habit model
+Route::apiResource('habits', HabitController::class);
+
+//all  the routes we need for Logs model
+Route::apiResource('Logs',LogsController::class);
+
+
+// Route::get('/',function(){
+//     return "api ";
+// });
