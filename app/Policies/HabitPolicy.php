@@ -9,58 +9,22 @@ use Illuminate\Auth\Access\Response;
 class HabitPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Check if the user can view the habit.
      */
-    public function viewAny(User $user): bool
+    public function view(User $user, Habit $habit): Response
     {
-        return false;
+        return $user->id === $habit->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this habit.');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Check if the user can modify the habit.
      */
-    public function view(User $user, Habit $habit): bool
+    public function modify(User $user, Habit $habit): Response
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Habit $habit): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Habit $habit): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Habit $habit): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Habit $habit): bool
-    {
-        return false;
+        return $user->id === $habit->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this habit.');
     }
 }
