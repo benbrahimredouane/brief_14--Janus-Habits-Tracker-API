@@ -1,21 +1,31 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HabitController;
 use App\Http\Controllers\LogsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+// Public authentication routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-//all  the routes we need for habit model
-Route::apiResource('habits', HabitController::class);
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    // Auth routes
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 
-//all  the routes we need for Logs model
-Route::apiResource('Logs',LogsController::class);
+    // Habit CRUD routes
+    Route::apiResource('habits', HabitController::class);
 
+    // Habit log routes
+    Route::get('/habits/{habit}/logs', [LogsController::class, 'index']);
+    Route::post('/habits/{habit}/logs', [LogsController::class, 'store']);
 
-// Route::get('/',function(){
-//     return "api ";
-// });
+    Route::get('/logs/{log}', [LogsController::class, 'show']);
+    Route::put('/logs/{log}', [LogsController::class, 'update']);
+    Route::delete('/logs/{log}', [LogsController::class, 'destroy']);
+
+    // Habit stats route
+    // Route::get('/habits/{habit}/stats', [HabitController::class, 'stats']);
+});
